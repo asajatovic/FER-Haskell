@@ -1,4 +1,4 @@
-# PUH assignments - asajatovic
+# PUH assignments - Antonio Šajatović
 
 Welcome to your PUH assignments repository, *asajatovic*. Here's a quick intro to how things are gonna work around here.
 
