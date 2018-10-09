@@ -24,7 +24,8 @@ for the assignment you are about to tackle.
 
 Once you are done with the assignment, push its branch to the repository. Once
 pushed, [create a new *Merge request*](https://docs.gitlab.com/ee/gitlab-basics/add-merge-request.html)
-for merging the assignment branch onto the `master`.
+for merging the assignment branch onto the `master` and **assign the Merge Request
+to your TA**.
 
 A TA (your TA in case of training, someone else in case of battles) will then
 review your work and either provide you with comments, or approve the merge
@@ -37,11 +38,10 @@ guidelines:
 
 * name your *training* branches `training-XX`, e.g. `training-01` for the first
 training
-* name your *level battle* branches `level-XX`, e.g. `level-01` for the first
+* name your *level battle* branches `level-X`, e.g. `level-1` for the first
 level battle.
 
 ## Help me, I'm lost!
 
 If you have any git- or GitLab- related questions, ask them on Slack channel
 `#support-gitlab`. Don't worry - we're here to help!
-
