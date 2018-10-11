@@ -146,7 +146,7 @@ te123 str
 --
 -- Here is an example of such list where 'n' is 3:
 -- [(3,9),(5,25),(7,49),(9,81),...]
-te131 = undefined
+te131 n = [(x,x*x) | x <- [n,(n+2)..]]
 
 -- ** TE 1.3.2
 --
@@ -165,7 +165,7 @@ te131 = undefined
 -- (don't modify them). 'te132' should not take any arguments.
 --
 -- Also, pick one title and write a short story of 250 words max. (jk. lol :)
-te132 = undefined
+te132 = [adj ++ " " ++ no | adj <- adjective, no <- noun]
 
 -- | Lists which you should use in your 'te132' implementation.
 adjective, noun :: [String]
@@ -178,4 +178,4 @@ adjective, noun :: [String]
 --
 -- | Implement a function which takes in a list of pairs / tuples of 'Int's and
 -- returns a list of their sums.
-te133 = undefined
+te133 pairs = [x + y | (x,y) <- pairs]
