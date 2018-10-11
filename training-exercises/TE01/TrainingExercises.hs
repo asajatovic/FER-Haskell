@@ -72,18 +72,22 @@ import Data.Char
 
 -- ** TE 1.1.1
 --
--- | Using IF-THEN-ELSE create a function which takes in an 'Int' and divides it by 2
+-- | Using IF-THEN-ELSE create a functiinton which takes in an 'Int' and divides it by 2
 -- if it's even otherwise it adds 1 to it and than divides it by 2.
 --
 -- You can use 'even' and 'div' functions to make things easier.
-te111 = undefined
+te111 x = if even x then div x 2 else div (x + 1) 2
 
 -- ** TE 1.1.2
 --
 -- | Using GUARDS, implement a function which takes in an 'Int' and for numbers from
 -- 1 to 3 it returns "one", "two" and "three" respectively, for everything else
 -- return "out of range".
-te112 = undefined
+te112 x
+  | x == 1 = "one"
+  | x == 2 = "two"
+  | x == 3 = "three"
+  | otherwise = "out of range"
 
 -- ** TE 1.1.3
 --
@@ -93,7 +97,11 @@ te112 = undefined
 -- return "out of range".
 --
 -- Message should be in the following format: "number is in the [1,5) range"
-te113 = undefined
+te113 x
+  | x >= 1 && x < 5 = "number is in the [1,5) range"
+  | x >= -4 && x <= 0 = "number is in the [-4,0] range"
+  | x > 25 && x <= 100 = "number is in the (25,100) range"
+  | otherwise = "out of range"
 
 --
 
