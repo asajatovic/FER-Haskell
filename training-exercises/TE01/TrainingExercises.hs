@@ -111,13 +111,16 @@ te113 x
 --
 -- | Implement a function which takes in two lists of the same type and returns the
 -- longer one. If the lists are of equal length concatenate them and return that.
-te121 = undefined
+te121 l1 l2
+  | length l1 > length l2 = l1
+  | length l1 < length l2 = l2
+  | otherwise = l1 ++ l2
 
 -- ** TE 1.2.2
 --
 -- | Implement a function which adds '.' to the end of the 'String' by using ':'
 -- (cons operator) and 'reverse' function.
-te122 = undefined
+te122 str = reverse ('.' : reverse str)
 
 -- ** TE 1.2.3
 --
@@ -126,7 +129,9 @@ te122 = undefined
 --
 -- You can use functions 'words' and 'unwords' to split the 'String' into a list of
 -- words.
-te123 = undefined
+te123 str
+  | length (words str) < 6 = ""
+  | otherwise = unwords $ drop 3 $ take (length (words str) - 3) (words str)
 
 --
 
