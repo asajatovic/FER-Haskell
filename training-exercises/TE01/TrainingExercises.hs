@@ -100,7 +100,7 @@ te112 x
 te113 x
   | x >= 1 && x < 5 = "number is in the [1,5) range"
   | x >= -4 && x <= 0 = "number is in the [-4,0] range"
-  | x > 25 && x <= 100 = "number is in the (25,100) range"
+  | x > 25 && x <= 100 = "number is in the (25,100] range"
   | otherwise = "out of range"
 
 --
@@ -165,7 +165,7 @@ te131 n = [(x,x*x) | x <- [n,(n+2)..]]
 -- (don't modify them). 'te132' should not take any arguments.
 --
 -- Also, pick one title and write a short story of 250 words max. (jk. lol :)
-te132 = [adj ++ " " ++ no | adj <- adjective, no <- noun]
+te132 = zip [1..] [ "The " ++ adj ++ " " ++ no | adj <- adjective, no <- noun]
 
 -- | Lists which you should use in your 'te132' implementation.
 adjective, noun :: [String]
