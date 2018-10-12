@@ -76,14 +76,18 @@ import Data.Char
 -- if it's even otherwise it adds 1 to it and than divides it by 2.
 --
 -- You can use 'even' and 'div' functions to make things easier.
-te111 = undefined
+te111 x = if even x then x `div` 2 else (x + 1) `div` 2
 
 -- ** TE 1.1.2
 --
 -- | Using GUARDS, implement a function which takes in an 'Int' and for numbers from
 -- 1 to 3 it returns "one", "two" and "three" respectively, for everything else
 -- return "out of range".
-te112 = undefined
+te112 x
+  | x == 1 = "one"
+  | x == 2 = "two"
+  | x == 3 = "three"
+  | otherwise = "out of range"
 
 -- ** TE 1.1.3
 --
@@ -93,7 +97,11 @@ te112 = undefined
 -- return "out of range".
 --
 -- Message should be in the following format: "number is in the [1,5) range"
-te113 = undefined
+te113 x
+  | x >= 1 && x < 5 = "number is in the [1,5) range"
+  | x >= -4 && x <= 0 = "number is in the [-4,0] range"
+  | x > 25 && x <= 100 = "number is in the (25,100] range"
+  | otherwise = "out of range"
 
 --
 
@@ -103,13 +111,16 @@ te113 = undefined
 --
 -- | Implement a function which takes in two lists of the same type and returns the
 -- longer one. If the lists are of equal length concatenate them and return that.
-te121 = undefined
+te121 l1 l2
+  | length l1 > length l2 = l1
+  | length l1 < length l2 = l2
+  | otherwise = l1 ++ l2
 
 -- ** TE 1.2.2
 --
 -- | Implement a function which adds '.' to the end of the 'String' by using ':'
 -- (cons operator) and 'reverse' function.
-te122 = undefined
+te122 str = reverse ('.' : reverse str)
 
 -- ** TE 1.2.3
 --
@@ -118,7 +129,9 @@ te122 = undefined
 --
 -- You can use functions 'words' and 'unwords' to split the 'String' into a list of
 -- words.
-te123 = undefined
+te123 str
+  | length (words str) < 6 = ""
+  | otherwise = unwords $ drop 3 $ take (length (words str) - 3) (words str)
 
 --
 
@@ -133,7 +146,7 @@ te123 = undefined
 --
 -- Here is an example of such list where 'n' is 3:
 -- [(3,9),(5,25),(7,49),(9,81),...]
-te131 = undefined
+te131 n = [(x,x*x) | x <- [n,(n+2)..]]
 
 -- ** TE 1.3.2
 --
@@ -152,7 +165,7 @@ te131 = undefined
 -- (don't modify them). 'te132' should not take any arguments.
 --
 -- Also, pick one title and write a short story of 250 words max. (jk. lol :)
-te132 = undefined
+te132 = zip [1..] [ "The " ++ adj ++ " " ++ no | adj <- adjective, no <- noun]
 
 -- | Lists which you should use in your 'te132' implementation.
 adjective, noun :: [String]
@@ -165,4 +178,4 @@ adjective, noun :: [String]
 --
 -- | Implement a function which takes in a list of pairs / tuples of 'Int's and
 -- returns a list of their sums.
-te133 = undefined
+te133 pairs = [x + y | (x,y) <- pairs]
