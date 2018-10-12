@@ -72,11 +72,11 @@ import Data.Char
 
 -- ** TE 1.1.1
 --
--- | Using IF-THEN-ELSE create a functiinton which takes in an 'Int' and divides it by 2
+-- | Using IF-THEN-ELSE create a function which takes in an 'Int' and divides it by 2
 -- if it's even otherwise it adds 1 to it and than divides it by 2.
 --
 -- You can use 'even' and 'div' functions to make things easier.
-te111 x = if even x then div x 2 else div (x + 1) 2
+te111 x = if even x then x `div` 2 else (x + 1) `div` 2
 
 -- ** TE 1.1.2
 --
