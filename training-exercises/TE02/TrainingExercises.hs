@@ -12,7 +12,8 @@
 --
 module TrainingExercises where
 --
-import Data.List
+import Data.List hiding (lookup)
+import Prelude hiding (lookup)
 import Data.Char
 --
 
@@ -36,13 +37,23 @@ import Data.Char
 -- a list with a single element as a result (or no elements if the key doesn't
 -- exist):
 findItem :: [(String, a)] -> String -> [(String, a)]
-findItem = undefined
+findItem list key =
+  if null list 
+    then list
+    else if fst (head list) == key 
+      then [head list] 
+      else findItem (tail list) key
 
 -- ** TE 2.2
 --
 -- | Write a function that checks if a list contains an element with a certain key:
 contains :: [(String, a)] -> String -> Bool
-contains = undefined
+contains list key =
+  if null list
+    then False
+    else if fst (head list) == key 
+      then True 
+      else contains (tail list) key
 
 -- ** TE 2.3
 --
@@ -50,23 +61,32 @@ contains = undefined
 -- the key doesn’t exist (example of error function usage : error "I’m an error
 -- message"):
 lookup :: [(String, a)] -> String -> a
-lookup = undefined
+lookup list key =
+  if null list
+    then error "I’m an error message"
+    else if fst (head list) == key 
+      then snd (head list) 
+      else lookup (tail list) key
 
 -- ** TE 2.4
 --
 -- | Write a function that inserts a new key value pair. If key already exists than do nothing:
 insert :: [(String, a)] -> (String, a) -> [(String, a)]
-insert = undefined
+insert list pair = 
+  if contains list (fst pair) then list ++ [pair] else list
 
 -- ** TE 2.5
 --
 -- | Write a function that removes a key value pair with the certain key:
 remove :: [(String, a)] -> String -> [(String, a)]
-remove = undefined
+remove list key = [pair | pair <- list, key /= fst pair ]
 
 -- ** TE 2.6
 --
 -- | Write a function that updates the value of a certain key (if the key doesn’t exist,
 -- the function does nothing) :
 update :: [(String, a)] -> String -> a -> [(String, a)]
-update = undefined
+update list key value =
+  if contains list key
+    then (remove list key) ++ [(key, value)]
+    else list 
