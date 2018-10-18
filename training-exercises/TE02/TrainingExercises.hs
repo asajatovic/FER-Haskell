@@ -67,8 +67,7 @@ lookup list key =
 --
 -- | Write a function that inserts a new key value pair. If key already exists than do nothing:
 insert :: [(String, a)] -> (String, a) -> [(String, a)]
-insert list pair = 
-  if not (contains list (fst pair)) then [pair] ++ list else list
+insert list pair = if not (contains list (fst pair)) then pair : list else list
 
 -- ** TE 2.5
 --
