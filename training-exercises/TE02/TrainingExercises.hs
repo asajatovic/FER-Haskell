@@ -48,12 +48,7 @@ findItem list key =
 --
 -- | Write a function that checks if a list contains an element with a certain key:
 contains :: [(String, a)] -> String -> Bool
-contains list key =
-  if null list
-    then False
-    else if fst (head list) == key 
-      then True 
-      else contains (tail list) key
+contains list key = not $ null (findItem list key)
 
 -- ** TE 2.3
 --
@@ -73,7 +68,7 @@ lookup list key =
 -- | Write a function that inserts a new key value pair. If key already exists than do nothing:
 insert :: [(String, a)] -> (String, a) -> [(String, a)]
 insert list pair = 
-  if contains list (fst pair) then list ++ [pair] else list
+  if not (contains list (fst pair)) then [pair] ++ list else list
 
 -- ** TE 2.5
 --
@@ -86,7 +81,4 @@ remove list key = [pair | pair <- list, key /= fst pair ]
 -- | Write a function that updates the value of a certain key (if the key doesn’t exist,
 -- the function does nothing) :
 update :: [(String, a)] -> String -> a -> [(String, a)]
-update list key value =
-  if contains list key
-    then (remove list key) ++ [(key, value)]
-    else list 
+update list key value = [if key == fst pair then (key, value) else pair  | pair <- list]
