@@ -172,6 +172,7 @@ te131 n = [(x,x*x) | x <- [n,(n+2)..]]
 -- (don't modify them). 'te132' should not take any arguments.
 --
 -- Also, pick one title and write a short story of 250 words max. (jk. lol :)
+te132 :: [(Integer, [Char])]
 te132 = zip [1..] [ "The " ++ adj ++ " " ++ no | adj <- adjective, no <- noun]
 
 -- | Lists which you should use in your 'te132' implementation.
