@@ -82,7 +82,17 @@ import Data.Char
 -- Hint: you can write some "helper" functions to help you solve this problem.
 
 lb11 :: Int -> Int
-lb11 = undefined
+lb11 year
+    | isLeapYear year = 29
+    | otherwise = 28
+
+isLeapYear :: Int -> Bool
+isLeapYear year = 
+  if year `mod` 400 == 0
+    then True
+    else if (year `mod` 4 == 0) && (year `mod` 100 /= 0)
+        then True
+        else False
 
 -- ** L 1.2
 --
@@ -98,7 +108,10 @@ lb11 = undefined
 -- Hint: you can write some "helper" functions to help you solve this problem.
 
 lb12 :: String -> Bool
-lb12 = undefined
+lb12 str = (prepareStr str) == prepareStr (reverse str)
+
+prepareStr :: String -> String
+prepareStr str = [toLower s | s <- str, s /= ' ']
 
 -- * L 1.3
 --
@@ -110,4 +123,4 @@ lb12 = undefined
 -- lb13 2 [2,3,5,7,11,13,17] = [3,7,13]
 
 lb13 :: Int -> [a] -> [a]
-lb13 = undefined
+lb13 n list = [item | (ind, item) <- (zip [1..] list), ind `mod` n == 0]
