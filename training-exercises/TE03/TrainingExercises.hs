@@ -85,7 +85,7 @@ te314 users = sum [lit | (_, _, lit) <- users]
 
 te321 :: [Double] -> Double
 te321 nums
-  | length nums <3 = error "average" --"Not enough elements"
+  | length nums <3 = error "Not enough elements"
   | otherwise = s / realToFrac l
   where s = sum $ tail $ init nums
         l = length $ tail $ init nums
