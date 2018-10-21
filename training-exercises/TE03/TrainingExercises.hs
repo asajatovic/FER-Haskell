@@ -39,7 +39,9 @@ exampleUser = ("username", "nope", 3)
 --   3. Otherwise it is a bad password.
 
 te311 :: (Username, Password, LoggedInTimes) -> Bool
-te311 = undefined
+te311 (_, "flasha-ah", _) = True
+te311 (_, (p:passw), _) = p == 'H' && length passw > 5
+te311 (_, passw, _) = False
 
 -- ** TE 3.1.2
 --
@@ -49,7 +51,8 @@ te311 = undefined
 -- -> Example: te312 ("username", "nope", 3) ==> ("username", False, 3).
 -- Bear in mind that you will need the whole input tuple for te311.
 
-te312 = undefined
+te312 :: (Username, Password, LoggedInTimes) -> (Username, Bool, LoggedInTimes)
+te312 (usrname, passw, lit) = (usrname, te311 (usrname, passw, lit), lit)
 
 -- ** TE 3.1.3
 --
@@ -58,14 +61,17 @@ te312 = undefined
 -- -> Example: te313 ("username", True, 3) ==> "Heeey man, glad to see you back."
 -- -> Example: te313 ("username", False, 3) ==> "NO! GOD! NO!" (https://giphy.com/gifs/the-office-no-michael-scott-ToMjGpx9F5ktZw8qPUQ)
 
-te313 = undefined
+te313 :: (Username, Bool, LoggedInTimes) -> String
+te313 (_, True, _) = "Heeey man, glad to see you back."
+te313 (_, False, _) = "NO! GOD! NO!"
 
 -- ** TE 3.1.4 - EXTRA
 --
 -- | Write a function that goes through a list of users and extracts the LoggedInTimes attribute (list comprehension).
 -- After that you should sum the resulting list. (Hint: it has something to do with the `sum` function).
 
-te314 undefined
+te314 :: [(Username, Password, LoggedInTimes)] -> Int
+te314 users = sum [lit | (_, _, lit) <- users]
 
 
 {- * 3.2 LOCAL DEFINITION (WHERE & LET) -}
@@ -77,7 +83,12 @@ te314 undefined
 -- If you have to calculate average of an empty list, throw an error.
 -- Ex. te321 [2.0, 4.0, 6.0, 10.0] -> 5.0
 
-te321 = undefined
+te321 :: [Double] -> Double
+te321 nums
+  | length nums <3 = error "average" --"Not enough elements"
+  | otherwise = s / realToFrac l
+  where s = sum $ tail $ init nums
+        l = length $ tail $ init nums
 
 -- ** TE 3.2.2
 --
@@ -90,7 +101,14 @@ te321 = undefined
 -- Ex. te322 "AA"  -> "The string has two characters"
 -- Ex. te322 "AAA" -> "The string has many characters"
 
-te322 = undefined
+te322 :: String -> String
+te322 [] = error "The string is empty"
+te322 xs =
+  "The string has " ++ case l of
+    1 -> "one character"
+    2 -> "two characters"
+    l -> "many characters"
+    where l = length xs
 
 -- ** TE 3.2.3
 --
@@ -100,7 +118,13 @@ te322 = undefined
 -- the previously defined 'median' function.)
 -- quartiles [3,1,2,4,5,6,8,0,7] => (1.5, 4.0, 6.5)
 
-te323 = undefined
+te323 :: (Integral a, Fractional b) => [a] -> (b,b,b)
+te323 xs
+  | odd l = (median $ take h ys, median ys, median $ drop (h+1) ys)
+  | otherwise = (median $ take h ys, median ys, median $ drop h ys)
+  where l  = length xs
+        h  = l `div` 2
+        ys = sort xs
 
 -- you already have this (from the lecture:)
 median :: (Integral a, Fractional b) => [a] -> b
