@@ -40,8 +40,8 @@ exampleUser = ("username", "nope", 3)
 
 te311 :: (Username, Password, LoggedInTimes) -> Bool
 te311 (_, "flasha-ah", _) = True
-te311 (_, (p:passw), _) = p == 'H' && length passw > 5
-te311 (_, passw, _) = False
+te311 (_, ('H':passw), _) = length passw > 5
+te311 _                   = False
 
 -- ** TE 3.1.2
 --
@@ -52,7 +52,7 @@ te311 (_, passw, _) = False
 -- Bear in mind that you will need the whole input tuple for te311.
 
 te312 :: (Username, Password, LoggedInTimes) -> (Username, Bool, LoggedInTimes)
-te312 (usrname, passw, lit) = (usrname, te311 (usrname, passw, lit), lit)
+te312 user@(usrname, passw, lit) = (usrname, te311 user, lit)
 
 -- ** TE 3.1.3
 --
@@ -85,10 +85,11 @@ te314 users = sum [lit | (_, _, lit) <- users]
 
 te321 :: [Double] -> Double
 te321 nums
-  | length nums <3 = error "Not enough elements"
+  | length nums < 3 = error "Not enough elements"
   | otherwise = s / realToFrac l
-  where s = sum $ tail $ init nums
-        l = length $ tail $ init nums
+  where xs = tail $ init nums
+        s = sum xs
+        l = length xs
 
 -- ** TE 3.2.2
 --
@@ -107,7 +108,7 @@ te322 xs =
   "The string has " ++ case l of
     1 -> "one character"
     2 -> "two characters"
-    l -> "many characters"
+    otherwise -> "many characters"
     where l = length xs
 
 -- ** TE 3.2.3
