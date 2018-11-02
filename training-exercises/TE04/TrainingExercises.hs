@@ -76,9 +76,9 @@ te414 xs  =  merge (te414 left_half) (te414 right_half)
 merge :: Ord a => [a] -> [a] -> [a]
 merge xs [] = xs
 merge [] ys = ys
-merge (hx:txs) (hy:tys)
-  | hx <= hy = hx:(merge txs (hy:tys))
-  | otherwise = hy:(merge (hx:txs) tys)
+merge xs@(hx:txs) ys@(hy:tys)
+  | hx <= hy = hx:(merge txs ys)
+  | otherwise = hy:(merge xs tys)
 
 
 -- ** TE 4.1.5 - EXTRA
