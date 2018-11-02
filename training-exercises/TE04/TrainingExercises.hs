@@ -31,8 +31,7 @@ import Data.Char
 --
 
 te411 :: Int -> Int
-te411 1 = 1
-te411 n = 1 + (te411 (n-1)) + (te411 (n-1)) 
+te411 n = 2^n - 1 
 
 
 -- ** TE 4.1.2
@@ -55,7 +54,7 @@ te412 n1 n2 = te412 n2 (n1 `mod` n2)
 te413 :: [a] -> a
 te413 []     = error "Empty list"
 te413 [x]    = x
-te413 (x:xs) = te413 xs
+te413 (_:xs) = te413 xs
 
 
 -- ** TE 4.1.4
