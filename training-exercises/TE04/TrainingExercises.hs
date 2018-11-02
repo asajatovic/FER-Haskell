@@ -31,7 +31,8 @@ import Data.Char
 --
 
 te411 :: Int -> Int
-te411 n = 2^n - 1 
+te411 1 = 1
+te411 n = 1 + 2 * (te411 (n-1))
 
 
 -- ** TE 4.1.2
@@ -75,7 +76,7 @@ te414 xs  =  merge (te414 left_half) (te414 right_half)
 merge :: Ord a => [a] -> [a] -> [a]
 merge xs [] = xs
 merge [] ys = ys
-merge xs@(hx:txs) ys@(hy:tys)
+merge (hx:txs) (hy:tys)
   | hx <= hy = hx:(merge txs (hy:tys))
   | otherwise = hy:(merge (hx:txs) tys)
 
