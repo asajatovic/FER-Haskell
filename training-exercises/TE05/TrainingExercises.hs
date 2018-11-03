@@ -34,7 +34,11 @@ import Data.Char
 -- | too, so you don't call `length` repeatedly on the same word.
 
 te511 :: String -> String
-te511 = undefined
+te511 sent = longestWord (words sent) 0 ""
+  where longestWord [] _ lw = lw
+        longestWord (w:ws) n lw
+          | length w > n = longestWord ws (length w) w
+          | otherwise    = longestWord ws n lw
 
 -- ** TE 5.1.2
 --
@@ -45,7 +49,9 @@ te511 = undefined
 -- | representing the polynomial x^3 - 2x + 3 would be  as  [1, 0, -2, 3].
 
 te512 :: Num a => [a] -> a -> a
-te512 = undefined
+te512 coeffs x = hornerMethod (reverse coeffs) 0 0
+  where hornerMethod         [] n res = res
+        hornerMethod (c:coeffs) n res = hornerMethod coeffs (n+1) (res + c*x^n)
 
 -- ** TE 5.1.3
 --
@@ -54,7 +60,21 @@ te512 = undefined
 -- | do this using recursive functions with accumulation.
 
 te513 :: Floating a => [a] -> a
-te513 = undefined
+te513 []  = error "Empty list"
+te513 nums = sqrt (variance nums)
+
+mean :: Floating a => [a] -> a
+mean nums = mean' nums 0
+  where mean'       [] res = res
+        mean' (n:nums) res = mean' nums (res + n/l)
+        l = realToFrac $ length nums
+
+variance :: Floating a => [a] -> a
+variance nums = variance' nums 0
+  where variance'       [] res = res
+        variance' (n:nums) res = variance' nums (res + (n-m)**2/l)
+        m = mean nums
+        l = realToFrac $ length nums
 
 -- ** TE 5.1.4
 --
@@ -87,7 +107,33 @@ te513 = undefined
 -- | do for now.)
 
 te514 :: [(String, Double)] -> [Int]
-te514 = undefined
+te514 [] = error "Empty list"
+te514 descs = checkSeg descs (20/3.6) 0 0
+  where checkSeg [] _ _ _ = []
+        checkSeg (("drop",h):descs) v _ seg =
+          let t = (-v + sqrt (v^2 + 2*h*g)) / g
+              v_t = v + g*t
+          in  if v_t > 0.0
+                then checkSeg descs v_t 0 (seg+1)
+                else [seg]
+        checkSeg (("even",s):descs) v _ seg =
+          let v_t = v - 0.5*s
+          in  if v_t > 0.0
+                then checkSeg descs v_t 0 (seg+1)
+                else [seg]
+        checkSeg (("turn left",r):descs) v n seg =
+          let gf = v^2/(r*g)
+              n_t = n + 1
+          in  if gf <= 5.0 && n_t < 3 
+                then checkSeg descs v n_t (seg+1)
+                else [seg]
+        checkSeg (("turn right",r):descs) v n seg =
+          let gf = v^2/(r*g)
+              n_t = n + 1
+          in  if gf <= 5.0 && n_t < 3 
+                then checkSeg descs v n_t (seg+1)
+                else [seg]
+        g = 9.81
 
 -- ** TE 5.1.5 - EXTRA
 --
@@ -95,4 +141,6 @@ te514 = undefined
 -- | of a given number using Newton's method, with the given number of iterations.
 -- | Use the halved original number as an initial guess for the method.
 te515 :: (Ord a, Fractional a, Integral b) => a -> b -> a
-te515 = undefined
+te515 n iter = newtonSqrt (n/2) iter
+  where newtonSqrt g    0 = g
+        newtonSqrt g iter = newtonSqrt ((g + n/g)/2) (iter - 1)
