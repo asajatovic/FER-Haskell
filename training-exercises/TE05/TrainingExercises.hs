@@ -49,9 +49,9 @@ te511 sent = longestWord (words sent) 0 ""
 -- | representing the polynomial x^3 - 2x + 3 would be  as  [1, 0, -2, 3].
 
 te512 :: Num a => [a] -> a -> a
-te512 coeffs x = hornerMethod (reverse coeffs) 0 0
-  where hornerMethod         [] n res = res
-        hornerMethod (c:coeffs) n res = hornerMethod coeffs (n+1) (res + c*x^n)
+te512 coeffs x = hornerMethod coeffs 0
+  where hornerMethod         [] res = res
+        hornerMethod (c:coeffs) res = hornerMethod coeffs (x*res + c)
 
 -- ** TE 5.1.3
 --
