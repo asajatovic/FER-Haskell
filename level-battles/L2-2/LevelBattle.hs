@@ -83,7 +83,7 @@ lb21 xs = vowCount xs 0
 
 lb22 :: Int -> String
 lb22 n 
-  | n < 0  = error "Converting negative numbers to decimal is too much of a hassle"
+  | n <  0 = error "Converting negative numbers to decimal is too much of a hassle"
   | n == 0 = "0"
   | otherwise = toBinary n
   where toBinary 0 = ""
