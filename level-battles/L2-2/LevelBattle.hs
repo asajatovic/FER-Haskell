@@ -97,7 +97,7 @@ lb22 n
 
 lb23 :: Int -> Int -> Int
 lb23 a b = divSub a b 0
-  where divSub a 0 c = error "divide by zero"
+  where divSub _ 0 _ = error "divide by zero"
         divSub a b c
           | a < b     = c
           | otherwise = divSub (a-b) b (c+1)
