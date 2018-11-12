@@ -33,7 +33,7 @@ import Data.Char
 -- | (Using eta reduction)
 
 multiplyWith2 :: Int -> Int
-multiplyWith2 = (*2)
+multiplyWith2 = (2*)
 
 
 -- ** TE 6.1.2
@@ -41,7 +41,7 @@ multiplyWith2 = (*2)
 -- | (Using eta reduction)
 
 add1 :: Int -> Int
-add1 = (+1)
+add1 = (1+)
 
 
 -- ** TE 6.1.3
@@ -94,7 +94,7 @@ filterElem p (x:xs)
 
 applyOnElem :: (Int -> Int) -> [Int] -> [Int]
 applyOnElem _ [] = []
-applyOnElem f (x:xs) = f x : map f xs
+applyOnElem f (x:xs) = f x : applyOnElem f xs
 
 
 -- ** TE 6.2.4
@@ -120,14 +120,14 @@ te625 = applyOnElem (apply3Times add1)
 -- Rewrite task te624 using built-in filter function
 
 te631 :: [Int] -> [Int]
-te631 = filter (<10)
+te631 = filter (lessThanTen)
 
 
 -- ** TE 6.3.2
 -- Rewrite task te625 using built-in map function
 
 te632 :: [Int] -> [Int]
-te632 = map (+3)
+te632 = map (apply3Times add1)
 
 
 -- **  TE 6.3.3
