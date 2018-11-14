@@ -64,7 +64,15 @@ import Data.Char
 
 
 lb21 :: String -> Int
-lb21 = undefined
+lb21 xs = vowCount xs 0
+  where vowCount []     n = n
+        vowCount (x:xs) n = case toLower(x) of 
+            'a' -> vowCount xs (n + 1)
+            'e' -> vowCount xs (n + 1)
+            'i' -> vowCount xs (n + 1)
+            'o' -> vowCount xs (n + 1)
+            'u' -> vowCount xs (n + 1)
+            _   -> vowCount xs n
 
 -- ** L 2.2
 --
@@ -74,7 +82,12 @@ lb21 = undefined
 -- lb22 -3 = error "Converting negative numbers to decimal is too much of a hassle"
 
 lb22 :: Int -> String
-lb22 = undefined
+lb22 n 
+  | n <  0 = error "Converting negative numbers to decimal is too much of a hassle"
+  | n == 0 = "0"
+  | otherwise = toBinary n
+  where toBinary 0 = ""
+        toBinary n = (toBinary $ n `div` 2) ++ (show $ n `mod` 2)
 
 -- ** L 2.3
 --
@@ -83,4 +96,8 @@ lb22 = undefined
 -- about negative numbers). In case of division by 0, throw an error.
 
 lb23 :: Int -> Int -> Int
-lb23 = undefined
+lb23 a b = divSub a b 0
+  where divSub _ 0 _ = error "divide by zero"
+        divSub a b c
+          | a < b     = c
+          | otherwise = divSub (a-b) b (c+1)
