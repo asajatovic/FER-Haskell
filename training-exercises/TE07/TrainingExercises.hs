@@ -50,10 +50,10 @@ te712 = undefined
 
 -- ** TE 7.1.3
 --
--- | Define a function that takes a list and returns only the odd elements of the list.
+-- | Define a function that takes a list and returns only the elements in non-even positions.
 -- You are not allowed to use list comprehensions and the function must be eta reduced.
 --
--- -> Example: [7, 0, 3, 2, 1, 6, 7] ==> [7, 3, 1, 7].
+-- -> Example: [7, 0, 2, 3, 1, 6, 7] ==> [7, 2, 1, 7].
 
 te713 :: [a] -> [a]
 te713 = undefined
