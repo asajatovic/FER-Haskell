@@ -72,7 +72,7 @@ te713 = map snd . filter (odd . fst) . zip [1..]
 -- -> Example: [("qui-gon", 3), ("deathsticks", 4), ("Ani", 2)] -> [("deathsticks", 4), ("qui-gon", 3), ("Ani", 2)]
 
 te721 :: [(String, Int)] -> [(String, Int)]
-te721 = sortBy (\(_,a) (_,b) -> compare b a)
+te721 = sortBy (comparing (negate . snd))
 
 -- ** TE 7.2.2
 --
@@ -85,7 +85,7 @@ te721 = sortBy (\(_,a) (_,b) -> compare b a)
 -- -> Example: [("tommy", 23), ("mark", 5), ("lisa", 17), ("denny", 40)] -> ([("tommy",23),("denny",40)],[("mark",5),("lisa",17)])
 
 te722 :: [(String, Int)] -> ([(String, Int)], [(String, Int)])
-te722 = partition (\(_,y) -> y > 20) . sortBy (\(_,a) (_,b) -> compare a b)
+te722 = partition ((>20) . snd)
 
 -- ** TE 7.2.3
 --
@@ -95,4 +95,4 @@ te722 = partition (\(_,y) -> y > 20) . sortBy (\(_,a) (_,b) -> compare a b)
 -- -> Example: [4.0, 5.0, 6.0, 1.0] -> [1.0, 3.0, 6.0, 9.0] -> [4.0, 15.0, 36.0, 9.0]
 
 te723 :: Num a => [a] -> [a] -> [a]
-te723 xs = zipWith (*) xs
+te723 = zipWith (*)
