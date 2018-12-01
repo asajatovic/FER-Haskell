@@ -58,7 +58,7 @@ lb31 = (97>) . ord
 
 lb32 :: String -> [Int] -> String
 --lb32 xs ys = map chr $ filter (\x -> x > ord minBound && x < ord maxBound) $ zipWith (\x y -> y + ord x) xs ys
-lb32 xs = map chr . filter (\x -> x > ord minBound && x < ord maxBound) . zipWith (\x y -> y + ord x) xs
+lb32 xs = map chr . filter (\x -> x >= ord minBound && x <= ord maxBound) . zipWith (\x y -> y + ord x) xs
 
 {- * COMPOSITION                                                              -}
 
