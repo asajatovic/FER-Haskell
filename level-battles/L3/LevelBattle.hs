@@ -36,7 +36,7 @@ import Data.Char ( chr, ord )
 -}
 
 lb31 :: Char -> Bool
-lb31 = undefined
+lb31 = (97>) . ord
 
 {- * HIGHER ORDER FUNCTIONS, MAP, FILTER & LAMBDA EXPRESSIONS                 -}
 
@@ -57,7 +57,8 @@ lb31 = undefined
 -}
 
 lb32 :: String -> [Int] -> String
-lb32 = undefined
+--lb32 xs ys = map chr $ filter (\x -> x > ord minBound && x < ord maxBound) $ zipWith (\x y -> y + ord x) xs ys
+lb32 xs = map chr . filter (\x -> x >= ord minBound && x <= ord maxBound) . zipWith (\x y -> y + ord x) xs
 
 {- * COMPOSITION                                                              -}
 
@@ -79,4 +80,5 @@ lb32 = undefined
 -}
 
 lb33 :: [Int -> Int] -> Int -> Bool
-lb33 = undefined
+--lb33 fs x = any (>5) $ flip map fs ($ x)
+lb33 fs = any (>5) . zipWith ($) fs . repeat
