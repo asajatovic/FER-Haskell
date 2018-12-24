@@ -54,7 +54,7 @@ data ChristmasTree a = Ornament
   deriving Show
 
 -- Define a function that takes a Christmas tree and returns a list containing
--- all elements in their in traversal.
+-- all elements in their in-order traversal.
 
 treeToList :: ChristmasTree a -> [a]
 treeToList = undefined
