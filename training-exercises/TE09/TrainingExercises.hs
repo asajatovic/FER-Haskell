@@ -31,7 +31,7 @@ import Data.Ord
 --
 -- Make sure to derive `Show` and `Eq`.
 --
-data Pair a b
+data Pair a b = Pair a b deriving (Show, Eq)
 
 -- ** TE 9.1.2
 --
@@ -40,7 +40,7 @@ data Pair a b
 -- -> Example: Pair 1 'a' ==> 1
 
 te912 :: Pair a b -> a
-te912 = undefined
+te912 (Pair a _) = a
 
 -- ** TE 9.1.3
 --
@@ -49,7 +49,7 @@ te912 = undefined
 -- -> Example: Pair 1 'a' ==> 'a'
 
 te913 :: Pair a b -> b
-te913 = undefined
+te913 (Pair _ b) = b
 
 -- ** TE 9.1.4
 --
@@ -58,7 +58,7 @@ te913 = undefined
 -- -> Example: Pair 1 'a' ==> Pair 'a' 1
 
 te914 :: Pair a b -> Pair b a
-te914 = undefined
+te914 (Pair a b) = Pair b a
 
 -- ** TE 9.1.5
 --
@@ -83,7 +83,9 @@ te915 = undefined
 -- -> Example: 0 Nothing         ==> 0
 
 te921 :: a -> Maybe a -> a
-te921 = undefined
+te921 a b = case b of 
+  Just b -> b
+  Nothing -> a
 
 -- ** TE 9.2.2
 --
@@ -137,7 +139,9 @@ data Tree a = Nil
 -- -> Example: Node 1 (Node 2 Nil Nil) (Node 4 Nil Nil) ==> 7
 
 te942 :: Num a => Tree a -> a
-te942 undefined
+te942 = sumTree 
+  where sumTree Nil                = 0
+        sumTree (Node a left right) = a + sumTree left + sumTree right
 
 -- ** TE 9.4.3
 --
@@ -147,4 +151,9 @@ te942 undefined
 
 -- (>) :: Ord a => a -> a -> Bool
 te943 :: Ord a => Tree a -> Maybe a
-te943 = undefined
+te943 t = treeMax t
+  where treeMax Nil                 = Nothing
+        treeMax (Node x Nil Nil)    = x
+        treeMax (Node x Nil right)  = max x (treeMax right)
+        treeMax (Node x left Nil)   = max x (treeMax left)
+        treeMax (Node x left right) = max x (max (treeMax left) (treeMax right))
