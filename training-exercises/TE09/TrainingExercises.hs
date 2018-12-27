@@ -69,7 +69,7 @@ te914 (Pair a b) = Pair b a
 -- -> Example: [Pair 1 'a', Pair 4 'c'] inc toupper ==> [Pair 2 'A', Pair 5 'C']
 
 te915 :: [Pair a b] -> (a -> a) -> (b -> b) -> [Pair a b]
-te915 = undefined
+te915 ps f1 f2 = map (\(Pair x y) ->  Pair (f1 x) (f2 y)) ps
 
 {- * 9.2 Maybe Type  -}
 
@@ -84,7 +84,7 @@ te915 = undefined
 
 te921 :: a -> Maybe a -> a
 te921 a b = case b of 
-  Just b -> b
+  Just b  -> b
   Nothing -> a
 
 -- ** TE 9.2.2
@@ -98,8 +98,11 @@ te921 a b = case b of
 -- -> Example: [Just True, Just True, Nothing]   ==> False
 
 te922 :: [Maybe Bool] -> Bool
-te922 = undefined
-
+te922 = and . map convert
+  where convert b = case b of 
+          Just b  -> b
+          Nothing -> False
+  
 
 {- * 9.3 Fmap  -}
 
@@ -118,7 +121,9 @@ te922 = undefined
 -- -> Example: [Just True, Just False, Nothing]   ==> [Just 5, Just 1, Nothing]
 
 te931 :: [Maybe Bool] -> [Maybe Int]
-te931 = undefined
+te931 = map (fmap grade)
+  where grade True  = 5
+        grade False = 1
 
 {- * 9.4 Recursive Data Structures  -}
 
@@ -140,7 +145,7 @@ data Tree a = Nil
 
 te942 :: Num a => Tree a -> a
 te942 = sumTree 
-  where sumTree Nil                = 0
+  where sumTree Nil                 = 0
         sumTree (Node a left right) = a + sumTree left + sumTree right
 
 -- ** TE 9.4.3
@@ -151,9 +156,6 @@ te942 = sumTree
 
 -- (>) :: Ord a => a -> a -> Bool
 te943 :: Ord a => Tree a -> Maybe a
-te943 t = treeMax t
-  where treeMax Nil                 = Nothing
-        treeMax (Node x Nil Nil)    = x
-        treeMax (Node x Nil right)  = max x (treeMax right)
-        treeMax (Node x left Nil)   = max x (treeMax left)
-        treeMax (Node x left right) = max x (max (treeMax left) (treeMax right))
+te943 = treeMax
+  where treeMax Nil   = Nothing
+        treeMax node  = maximum [Just $ value node, treeMax (left node), treeMax (right node)]
