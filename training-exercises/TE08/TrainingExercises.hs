@@ -40,7 +40,11 @@ import Data.Ord
 -- (we remove one pair of "bb", the third letter doesn't have a pair to be removed).
 
 te811 :: String -> String
-te811 = undefined --s = foldr (\x y -> if x == y then y:x else x ) ' ' s
+te811 ys = foldr removeAdjecent [] ys
+  where removeAdjecent y [] = [y]
+        removeAdjecent y (x:xs)
+          | y == x    = xs
+          | otherwise = y:x:xs
 
 -- ** TE 8.1.2
 --
@@ -88,7 +92,9 @@ data Transaction = Incoming Int | Outgoing Int deriving Show
 -- -> Example: [Incoming 15, Outgoing 10, Incoming 3] ==> 8
 
 te824 :: [Transaction] -> Int
-te824 trans = foldl (\x (ttype amount)-> if ttype == Incoming then (x+amount) else (x-amount)) 0 trans
+te824 = foldl accBalance 0
+  where accBalance total (Incoming amount) = total + amount
+        accBalance total (Outgoing amount) = total - amount 
 
 -- ** TE 8.2.5
 --
@@ -100,4 +106,8 @@ te824 trans = foldl (\x (ttype amount)-> if ttype == Incoming then (x+amount) el
 -- -> Example: [Outgoing 10, Incoming 15, Incoming 3] ==> False
 
 te825 :: [Transaction] -> Bool
-te825 = undefined
+te825 = snd . foldl negBalance (0, True)
+  where negBalance (balance, False)                t = (balance, False)
+        negBalance (balance, True) (Incoming amount) = (balance + amount, (balance + amount) > 0)
+        negBalance (balance, True) (Outgoing amount) = (balance - amount, (balance - amount) > 0)
+  
