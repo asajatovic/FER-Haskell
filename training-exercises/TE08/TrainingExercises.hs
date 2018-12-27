@@ -107,7 +107,7 @@ te824 = foldl accBalance 0
 
 te825 :: [Transaction] -> Bool
 te825 = snd . foldl negBalance (0, True)
-  where negBalance (balance, False)                t = (balance, False)
-        negBalance (balance, True) (Incoming amount) = (balance + amount, (balance + amount) > 0)
+  where negBalance (balance, False)                _ = (balance, False)
+        negBalance (balance, True) (Incoming amount) = (balance + amount, True)
         negBalance (balance, True) (Outgoing amount) = (balance - amount, (balance - amount) > 0)
   
