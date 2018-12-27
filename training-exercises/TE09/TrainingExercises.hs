@@ -121,9 +121,7 @@ te922 = and . map convert
 -- -> Example: [Just True, Just False, Nothing]   ==> [Just 5, Just 1, Nothing]
 
 te931 :: [Maybe Bool] -> [Maybe Int]
-te931 = map (fmap grade)
-  where grade True  = 5
-        grade False = 1
+te931 = map (fmap (\x -> if x then 5 else 1))
 
 {- * 9.4 Recursive Data Structures  -}
 
