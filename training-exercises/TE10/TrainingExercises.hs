@@ -43,6 +43,12 @@ data MyList a = Empty | Cons a (MyList a) deriving Show
 
 -- TODO instance ...
 
+instance Eq a => Eq (MyList a) where
+  l1 == l2 = myListEqual l1 l2
+
+myListEqual :: Eq a => MyList a -> MyList a -> Bool
+myListEqual l1 l2 = True
+  
 -- ** TE 10.1.2
 
 -- Take a look at the Christmas Tree data type - it's your normal tree, except
@@ -57,7 +63,9 @@ data ChristmasTree a = Ornament
 -- all elements in their in-order traversal.
 
 treeToList :: ChristmasTree a -> [a]
-treeToList = undefined
+treeToList = convertTreeToList [] 
+  where convertTreeToList xs Ornament = xs
+        convertTreeToList xs node = (convertTreeToList xs (left node))++[value node]++(convertTreeToList xs (right node))
 
 -- ** TE 10.1.3
 -- Let's say that two trees are equal if they contain the same elements
@@ -65,3 +73,5 @@ treeToList = undefined
 -- that implements that notion of equality.
 
 -- TODO instance ...
+instance Eq a => Eq (ChristmasTree a) where
+  t1 == t2 = (treeToList t1) == (treeToList t2)
