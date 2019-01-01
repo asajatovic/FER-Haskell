@@ -40,7 +40,11 @@ import Data.Ord
 -- (we remove one pair of "bb", the third letter doesn't have a pair to be removed).
 
 te811 :: String -> String
-te811 = undefined
+te811 = foldr removeAdjecent []
+  where removeAdjecent y [] = [y]
+        removeAdjecent y (x:xs)
+          | y == x    = xs
+          | otherwise = y:x:xs
 
 -- ** TE 8.1.2
 --
@@ -49,7 +53,7 @@ te811 = undefined
 -- -> Example: "Haskell" ==> 2
 
 te812 :: String -> Int
-te812 = undefined
+te812 = foldl (\x y -> if (toLower y) `elem` ['a','e','i','o','u'] then (x+1) else x) 0
 
 
 {- * 8.2 Data types  -}
@@ -59,7 +63,7 @@ te812 = undefined
 -- | Define a new data type `Day` that can be any day of the week.
 -- Make sure to derive Show.
 
-data Day
+data Day = Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday deriving (Show,Eq)
 
 -- ** TE 8.2.2
 --
@@ -69,7 +73,7 @@ data Day
 -- -> Example: Thursday  ==> True
 
 te822 :: Day -> Bool
-te822 undefined
+te822 = (==) Thursday
 
 -- ** TE 8.2.3
 --
@@ -78,7 +82,7 @@ te822 undefined
 -- Both Incoming and Outgoing transactions should have an Int value.
 -- Make sure to derive Show.
 
-data Transaction
+data Transaction = Incoming Int | Outgoing Int deriving Show
 
 -- ** TE 8.2.4
 --
@@ -88,7 +92,9 @@ data Transaction
 -- -> Example: [Incoming 15, Outgoing 10, Incoming 3] ==> 8
 
 te824 :: [Transaction] -> Int
-te824 = undefined
+te824 = foldl accBalance 0
+  where accBalance total (Incoming amount) = total + amount
+        accBalance total (Outgoing amount) = total - amount 
 
 -- ** TE 8.2.5
 --
@@ -100,4 +106,8 @@ te824 = undefined
 -- -> Example: [Outgoing 10, Incoming 15, Incoming 3] ==> False
 
 te825 :: [Transaction] -> Bool
-te825 = undefined
+te825 = snd . foldl negBalance (0, True)
+  where negBalance (balance, False)                _ = (balance, False)
+        negBalance (balance, True) (Incoming amount) = (balance + amount, True)
+        negBalance (balance, True) (Outgoing amount) = (balance - amount, (balance - amount) > 0)
+  
