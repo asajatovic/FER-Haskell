@@ -83,9 +83,8 @@ te915 ps f1 f2 = map (\(Pair x y) ->  Pair (f1 x) (f2 y)) ps
 -- -> Example: 0 Nothing         ==> 0
 
 te921 :: a -> Maybe a -> a
-te921 a b = case b of 
-  Just b  -> b
-  Nothing -> a
+te921 a (Just b)  = b 
+te921 a Nothing = a
 
 -- ** TE 9.2.2
 --
@@ -142,9 +141,8 @@ data Tree a = Nil
 -- -> Example: Node 1 (Node 2 Nil Nil) (Node 4 Nil Nil) ==> 7
 
 te942 :: Num a => Tree a -> a
-te942 = sumTree 
-  where sumTree Nil                 = 0
-        sumTree (Node a left right) = a + sumTree left + sumTree right
+te942 Nil                 = 0
+te942 (Node a left right) = a + te942 left + te942 right
 
 -- ** TE 9.4.3
 --
@@ -154,6 +152,5 @@ te942 = sumTree
 
 -- (>) :: Ord a => a -> a -> Bool
 te943 :: Ord a => Tree a -> Maybe a
-te943 = treeMax
-  where treeMax Nil   = Nothing
-        treeMax node  = maximum [Just $ value node, treeMax (left node), treeMax (right node)]
+te943 Nil   = Nothing
+te943 node  = maximum [Just $ value node, te943 (left node), te943 (right node)]
