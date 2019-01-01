@@ -40,7 +40,7 @@ import Data.Ord
 -- (we remove one pair of "bb", the third letter doesn't have a pair to be removed).
 
 te811 :: String -> String
-te811 ys = foldr removeAdjecent [] ys
+te811 = foldr removeAdjecent []
   where removeAdjecent y [] = [y]
         removeAdjecent y (x:xs)
           | y == x    = xs
