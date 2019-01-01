@@ -31,7 +31,7 @@ import Data.Ord
 --
 -- Make sure to derive `Show` and `Eq`.
 --
-data Pair a b
+data Pair a b = Pair a b deriving (Show, Eq)
 
 -- ** TE 9.1.2
 --
@@ -40,7 +40,7 @@ data Pair a b
 -- -> Example: Pair 1 'a' ==> 1
 
 te912 :: Pair a b -> a
-te912 = undefined
+te912 (Pair a _) = a
 
 -- ** TE 9.1.3
 --
@@ -49,7 +49,7 @@ te912 = undefined
 -- -> Example: Pair 1 'a' ==> 'a'
 
 te913 :: Pair a b -> b
-te913 = undefined
+te913 (Pair _ b) = b
 
 -- ** TE 9.1.4
 --
@@ -58,7 +58,7 @@ te913 = undefined
 -- -> Example: Pair 1 'a' ==> Pair 'a' 1
 
 te914 :: Pair a b -> Pair b a
-te914 = undefined
+te914 (Pair a b) = Pair b a
 
 -- ** TE 9.1.5
 --
@@ -69,7 +69,7 @@ te914 = undefined
 -- -> Example: [Pair 1 'a', Pair 4 'c'] inc toupper ==> [Pair 2 'A', Pair 5 'C']
 
 te915 :: [Pair a b] -> (a -> a) -> (b -> b) -> [Pair a b]
-te915 = undefined
+te915 ps f1 f2 = map (\(Pair x y) ->  Pair (f1 x) (f2 y)) ps
 
 {- * 9.2 Maybe Type  -}
 
@@ -83,7 +83,8 @@ te915 = undefined
 -- -> Example: 0 Nothing         ==> 0
 
 te921 :: a -> Maybe a -> a
-te921 = undefined
+te921 a (Just b)  = b 
+te921 a Nothing = a
 
 -- ** TE 9.2.2
 --
@@ -96,8 +97,11 @@ te921 = undefined
 -- -> Example: [Just True, Just True, Nothing]   ==> False
 
 te922 :: [Maybe Bool] -> Bool
-te922 = undefined
-
+te922 = and . map convert
+  where convert b = case b of 
+          Just b  -> b
+          Nothing -> False
+  
 
 {- * 9.3 Fmap  -}
 
@@ -116,7 +120,7 @@ te922 = undefined
 -- -> Example: [Just True, Just False, Nothing]   ==> [Just 5, Just 1, Nothing]
 
 te931 :: [Maybe Bool] -> [Maybe Int]
-te931 = undefined
+te931 = map (fmap (\x -> if x then 5 else 1))
 
 {- * 9.4 Recursive Data Structures  -}
 
@@ -137,7 +141,8 @@ data Tree a = Nil
 -- -> Example: Node 1 (Node 2 Nil Nil) (Node 4 Nil Nil) ==> 7
 
 te942 :: Num a => Tree a -> a
-te942 undefined
+te942 Nil                 = 0
+te942 (Node a left right) = a + te942 left + te942 right
 
 -- ** TE 9.4.3
 --
@@ -147,4 +152,5 @@ te942 undefined
 
 -- (>) :: Ord a => a -> a -> Bool
 te943 :: Ord a => Tree a -> Maybe a
-te943 = undefined
+te943 Nil   = Nothing
+te943 node  = maximum [Just $ value node, te943 (left node), te943 (right node)]
