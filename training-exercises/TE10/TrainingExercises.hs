@@ -71,9 +71,8 @@ data ChristmasTree a = Ornament
 -- all elements in their in-order traversal.
 
 treeToList :: ChristmasTree a -> [a]
-treeToList = convertTreeToList [] 
-  where convertTreeToList xs Ornament = xs
-        convertTreeToList xs node     = (convertTreeToList xs (left node))++[value node]++(convertTreeToList xs (right node))
+treeToList Ornament                 = []
+treeToList (Light value left right) = (treeToList left) ++ [value] ++ (treeToList right)
 
 -- ** TE 10.1.3
 -- Let's say that two trees are equal if they contain the same elements
