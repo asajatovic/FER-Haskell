@@ -43,6 +43,20 @@ data MyList a = Empty | Cons a (MyList a) deriving Show
 
 -- TODO instance ...
 
+{- No order solution
+instance Eq a => Eq (MyList a) where  
+  Empty     == Empty       = True
+  Cons x xs == Cons x' xs' = x == x' && xs == xs'
+  _         == _           = False 
+-}
+
+instance (Ord a, Eq a) => Eq (MyList a) where
+  l1 == l2 = (sort (myListToList l1)) == (sort (myListToList l2))
+
+myListToList :: MyList a -> [a]
+myListToList Empty       = []
+myListToList (Cons y ys) = y:(myListToList ys)
+  
 -- ** TE 10.1.2
 
 -- Take a look at the Christmas Tree data type - it's your normal tree, except
@@ -57,7 +71,8 @@ data ChristmasTree a = Ornament
 -- all elements in their in-order traversal.
 
 treeToList :: ChristmasTree a -> [a]
-treeToList = undefined
+treeToList Ornament                 = []
+treeToList (Light value left right) = (treeToList left) ++ [value] ++ (treeToList right)
 
 -- ** TE 10.1.3
 -- Let's say that two trees are equal if they contain the same elements
@@ -65,3 +80,15 @@ treeToList = undefined
 -- that implements that notion of equality.
 
 -- TODO instance ...
+
+{- No order solution
+instance Eq a => Eq (ChristmasTree a) where
+  Ornament               == Ornament                  = True
+  Light value left right == Light value' left' right' = 
+    (value == value' && left == left' && right == right') ||
+    (value == value' && left == right' && right == left')
+  _                      == _                         = False
+-}
+
+instance (Ord a, Eq a) => Eq (ChristmasTree a) where
+  t1 == t2 = (sort (treeToList t1)) == (sort (treeToList t2))
