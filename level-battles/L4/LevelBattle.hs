@@ -48,7 +48,7 @@ module LevelBattle where
   HINT: We are basically defining a linked list.
 -}
 
-data N
+data N = Z | Suc N
 
 {- * DERIVING & DEFINING TYPECLASS INSTANCES -}
 
@@ -78,20 +78,31 @@ data N
   use pattern matching just as easily.
 -}
 
+instance Eq N where
+  Z      == Z        = True
+  Suc n  == Suc n'   = n == n'
+  _      == _        = False
+
+
 instance Num N where
   n1 + n2     = undefined
   n1 - n2     = undefined
   n1 * n2     = undefined
-  abs         = undefined
-  signum      = undefined
-  fromInteger = undefined
+  abs         = id
+  signum Z    = Z
+  signum x    = Suc Z
+  fromInteger 0 = Z
+  fromInteger n = Suc (fromInteger (n-1))
 
 instance Enum N where
-  toEnum   = undefined
-  fromEnum = undefined
+  toEnum 0 = Z
+  toEnum n = Suc (toEnum (n-1))
+  fromEnum Z       = 0
+  fromEnum (Suc n) = 1 + fromEnum n
 
 instance Show N where
-  show = undefined
+  show Z = "Z"
+  show (Suc n) = "Suc (" ++ show n ++ ")"
 
 {- * RECORDS, PARAMETERISED TYPES, MAYBE TYPE, FMAP -}
 
@@ -113,7 +124,9 @@ instance Show N where
   converts / "lifts" a function 'a -> b' into 'f a -> f b'.
 -}
 
-data Ingredient
+data Ingredient a = Ingredient
+                    { name :: String
+                    , amount :: Maybe a} deriving (Show, Functor)
 
 convert :: ( a -> b ) -> Ingredient a -> Ingredient b
-convert = undefined
+convert f = fmap f
