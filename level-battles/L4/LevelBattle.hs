@@ -48,7 +48,7 @@ module LevelBattle where
   HINT: We are basically defining a linked list.
 -}
 
-data N = Z | Suc N
+data N = Z | S N deriving Eq
 
 {- * DERIVING & DEFINING TYPECLASS INSTANCES -}
 
@@ -78,31 +78,44 @@ data N = Z | Suc N
   use pattern matching just as easily.
 -}
 
-instance Eq N where
-  Z      == Z        = True
-  Suc n  == Suc n'   = n == n'
-  _      == _        = False
-
-
 instance Num N where
-  n1 + n2     = undefined
-  n1 - n2     = undefined
-  n1 * n2     = undefined
+  Z  + Z      = Z
+  Z  + n2     = n2
+  n1 + Z      = n1
+  n1 + n2     = add n1 n2
+    where add res Z     = res
+          add res (S x) = add (S res) x
+  Z  - Z      = Z
+  Z  - n2     = error "can't subtract from zero"
+  n1 - Z      = n1
+  n1 - n2     = sub n1 n2
+    where sub Z        _    = error "can't have a negative natural number"
+          sub res      Z    = res
+          sub (S x1) (S x2) = sub x1 x2
+  Z     * _     = Z
+  _     * Z     = Z
+  x     * (S Z) = x
+  (S Z) * x     = x
+  n1    * n2    = mul n1 n2
+    where mul n1 (S x) = n1 + n1 * x     -- TO DOOOOOOOOOOOOOOOOOOO!
   abs         = id
-  signum Z    = Z
-  signum x    = Suc Z
+  signum Z    = 0
+  signum x    = 1
   fromInteger 0 = Z
-  fromInteger n = Suc (fromInteger (n-1))
+  fromInteger n = S (fromInteger (n-1))
 
 instance Enum N where
-  toEnum 0 = Z
-  toEnum n = Suc (toEnum (n-1))
-  fromEnum Z       = 0
-  fromEnum (Suc n) = 1 + fromEnum n
+  toEnum n
+    | n <  0    = error "natural numbers can't be negative" 
+    | n == 0    = Z
+    | otherwise = S (toEnum (n-1))
+  fromEnum Z     = 0
+  fromEnum (S n) = 1 + fromEnum n
 
 instance Show N where
-  show Z = "Z"
-  show (Suc n) = "Suc (" ++ show n ++ ")"
+  show = show . toInteger
+    where toInteger Z     = 0
+          toInteger (S n) = 1 + toInteger n
 
 {- * RECORDS, PARAMETERISED TYPES, MAYBE TYPE, FMAP -}
 
