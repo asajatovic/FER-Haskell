@@ -82,22 +82,16 @@ instance Num N where
   Z  + Z      = Z
   Z  + n2     = n2
   n1 + Z      = n1
-  n1 + n2     = add n1 n2
-    where add res Z     = res
-          add res (S x) = add (S res) x
-  Z  - Z      = Z
-  Z  - n2     = error "can't subtract from zero"
-  n1 - Z      = n1
-  n1 - n2     = sub n1 n2
-    where sub Z        _    = error "can't have a negative natural number"
-          sub res      Z    = res
-          sub (S x1) (S x2) = sub x1 x2
-  Z     * _     = Z
-  _     * Z     = Z
-  x     * (S Z) = x
-  (S Z) * x     = x
-  n1    * n2    = mul n1 n2
-    where mul n1 (S x) = n1 + n1 * x     -- TO DOOOOOOOOOOOOOOOOOOO!
+  n1 + (S n2) = (S n1) + n2
+  Z      - Z      = Z
+  Z      - n2     = error "natural numbers can't be negative"
+  n1     - Z      = n1
+  (S n1) - (S n2) = n1 - n2
+  Z     * _      = Z
+  _     * Z      = Z
+  x     * (S Z)  = x
+  (S Z) * x      = x
+  n1    * (S n2) = n1 + n1 * n2
   abs         = id
   signum Z    = 0
   signum x    = 1
@@ -105,10 +99,10 @@ instance Num N where
   fromInteger n = S (fromInteger (n-1))
 
 instance Enum N where
+  toEnum 0 = Z
   toEnum n
-    | n <  0    = error "natural numbers can't be negative" 
-    | n == 0    = Z
-    | otherwise = S (toEnum (n-1))
+    | n > 0     = S (toEnum (n-1))
+    | otherwise = error "natural numbers can't be negative"
   fromEnum Z     = 0
   fromEnum (S n) = 1 + fromEnum n
 
