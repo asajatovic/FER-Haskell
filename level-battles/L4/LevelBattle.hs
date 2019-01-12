@@ -96,7 +96,9 @@ instance Num N where
   signum Z    = 0
   signum x    = 1
   fromInteger 0 = Z
-  fromInteger n = S (fromInteger (n-1))
+  fromInteger n 
+    | n > 0     = S (fromInteger (n-1))
+    | otherwise = error "natural numbers can't be negative"
 
 instance Enum N where
   toEnum 0 = Z
