@@ -48,7 +48,7 @@ module LevelBattle where
   HINT: We are basically defining a linked list.
 -}
 
-data N
+data N = Z | S N deriving Eq
 
 {- * DERIVING & DEFINING TYPECLASS INSTANCES -}
 
@@ -79,19 +79,39 @@ data N
 -}
 
 instance Num N where
-  n1 + n2     = undefined
-  n1 - n2     = undefined
-  n1 * n2     = undefined
-  abs         = undefined
-  signum      = undefined
-  fromInteger = undefined
+  Z  + Z      = Z
+  Z  + n2     = n2
+  n1 + Z      = n1
+  n1 + (S n2) = (S n1) + n2
+  Z      - Z      = Z
+  Z      - n2     = error "natural numbers can't be negative"
+  n1     - Z      = n1
+  (S n1) - (S n2) = n1 - n2
+  Z     * _      = Z
+  _     * Z      = Z
+  x     * (S Z)  = x
+  (S Z) * x      = x
+  n1    * (S n2) = n1 + n1 * n2
+  abs         = id
+  signum Z    = 0
+  signum x    = 1
+  fromInteger 0 = Z
+  fromInteger n 
+    | n > 0     = S (fromInteger (n-1))
+    | otherwise = error "natural numbers can't be negative"
 
 instance Enum N where
-  toEnum   = undefined
-  fromEnum = undefined
+  toEnum 0 = Z
+  toEnum n
+    | n > 0     = S (toEnum (n-1))
+    | otherwise = error "natural numbers can't be negative"
+  fromEnum Z     = 0
+  fromEnum (S n) = 1 + fromEnum n
 
 instance Show N where
-  show = undefined
+  show = show . toInteger
+    where toInteger Z     = 0
+          toInteger (S n) = 1 + toInteger n
 
 {- * RECORDS, PARAMETERISED TYPES, MAYBE TYPE, FMAP -}
 
@@ -113,7 +133,9 @@ instance Show N where
   converts / "lifts" a function 'a -> b' into 'f a -> f b'.
 -}
 
-data Ingredient
+data Ingredient a = Ingredient
+                    { name :: String
+                    , amount :: Maybe a} deriving (Show, Functor)
 
 convert :: ( a -> b ) -> Ingredient a -> Ingredient b
-convert = undefined
+convert f = fmap f
