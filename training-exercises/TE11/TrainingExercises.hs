@@ -69,7 +69,8 @@ firstDup = dupInd 0 S.empty
 --          isPermutation [5, 2, 3] [5, 3, 3] = False
 
 isPermutation :: Ord a => [a] -> [a] -> Bool
-isPermutation xs ys = M.null $ M.difference (M.fromList(zip [1..] ys)) (M.fromList(zip [1..] xs))
+isPermutation xs ys = M.empty == M.union (M.difference (M.fromList(zip [1..] xs)) (M.fromList(zip [1..] ys))) 
+                                         (M.difference (M.fromList(zip [1..] ys)) (M.fromList(zip [1..] xs)))
 
 {- 11.3 IO and random -}
 
