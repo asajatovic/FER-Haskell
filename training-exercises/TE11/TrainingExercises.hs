@@ -37,7 +37,7 @@ import System.Random
 -- Example: product' [4, 0, 3, -9, 1] => 12
 
 product' :: (Foldable t, Num a, Ord a) => t a -> a
-product' = undefined
+product' = foldl (\x y -> if y > 0 then x * y else x) 1
 
 
 {- 11.2 Standard data types -}
@@ -53,7 +53,11 @@ product' = undefined
 -- Example: firstDup [5, 2, 3, 5] = 3
 
 firstDup :: Ord a => [a] -> Int
-firstDup = undefined
+firstDup = dupInd 0 S.empty 
+  where dupInd _ _    []      = -1
+        dupInd i seen (x:xs) 
+          | x `S.member` seen = i
+          | otherwise         = dupInd (i+1) (S.insert x seen) xs
 
 
 -- ** TE 11.2.2
@@ -65,7 +69,8 @@ firstDup = undefined
 --          isPermutation [5, 2, 3] [5, 3, 3] = False
 
 isPermutation :: Ord a => [a] -> [a] -> Bool
-isPermutation = undefined
+isPermutation xs ys = M.empty == M.union (M.difference (M.fromList(zip [1..] xs)) (M.fromList(zip [1..] ys))) 
+                                         (M.difference (M.fromList(zip [1..] ys)) (M.fromList(zip [1..] xs)))
 
 {- 11.3 IO and random -}
 
@@ -83,7 +88,12 @@ isPermutation = undefined
 -- Stdout: goodbye
 
 firstDupIO :: IO ()
-firstDupIO = undefined
+firstDupIO = firstDup S.empty
+  where firstDup seen = do 
+          n <- getLine
+          if n `S.member` seen
+            then putStrLn "goodbye"
+            else firstDup (S.insert n seen)
 
 -- ** TE 11.3.2
 
@@ -108,4 +118,9 @@ firstDupIO = undefined
 -- (all of these are completely random!)
 
 userRandomIO :: IO ()
-userRandomIO = undefined
+userRandomIO = do
+  n <- getLine 
+  let num = read n :: Int
+  let g = mkStdGen num
+  let xs = randoms g :: [Int]
+  mapM_ (putStrLn . show) $ take num xs
