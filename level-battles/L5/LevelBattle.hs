@@ -80,10 +80,9 @@ parseSsv = split ';'
 
 instance Read Person where
   readsPrec _ rs =
-    let (pids:names:nums:_) = parseSsv rs
-        pid  = read pids :: Int
-        name = names
-        num  = read nums :: Int
+    let (pid':name:num':_) = parseSsv rs
+        pid  = read pid' :: Int
+        num  = read num' :: Int
         in [(Person pid name num, "")]
 
 {- ** LB 5.3 -}
@@ -149,13 +148,13 @@ data Battle = Battle {solvedTasks :: Int, mergeRequestName :: String} deriving (
 
 notNegative :: Int -> Maybe Int
 notNegative n
-  | n > 0     = Just n
+  | n >= 0    = Just n
   | otherwise = Nothing
 
 notEmpty :: String -> Maybe String
 notEmpty s
-  | length s > 0 = Just s
-  | otherwise    = Nothing
+  | s /= ""   = Just s
+  | otherwise = Nothing
 
 validateBattle :: Battle -> Maybe Battle
 validateBattle b = if (solvedTasks b >= 3 && mergeRequestName b == "level-5") then Just b else Nothing
