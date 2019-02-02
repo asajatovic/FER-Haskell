@@ -166,4 +166,4 @@ createBattle :: Int -> String -> Maybe Battle
 createBattle st' mrn' = do
   st <- notNegative st'
   mrn <- notEmpty mrn'
-  validateBattle (Battle st' mrn')
+  validateBattle (Battle st mrn)
