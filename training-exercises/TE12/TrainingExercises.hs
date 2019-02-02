@@ -74,10 +74,15 @@ company_stock = [stock1,stock2,stock3,stock4,stock5,stock6,stock7,stock8,stock9]
 -- ex te1211 "9567" -> 1900
 
 te1211 :: String -> Int
-te1211 = undefined
+te1211 fid = sum . map amount $ filter farmerIdPredicate company_stock
+  where farmerIdPredicate s = case farmer s of
+          Just f -> case farmerId f of
+            Just fid' -> fid' == fid
+            Nothing   -> False
+          Nothing -> False
 
 te1211m :: String -> Int
-te1211m = undefined
+te1211m fid = sum . map amount $ filter (\s -> Just fid == (farmer s >>= farmerId)) company_stock
 
 
 -- **** I hope you could see from this example how much cleaner the code is with monads. ****
@@ -92,10 +97,13 @@ te1211m = undefined
 -- ex te1212 "Strawberry" -> ["4284","9567"] or ["9567","4284"] (order is unimportant)
 
 getIds :: Fruit -> [String]
-getIds = undefined
+getIds f = mapMaybe (\s -> farmer s >>= farmerId) $ filter (\s -> f == fruit s) company_stock
 
 te1212 :: IO ()
-te1212 = undefined
+te1212 = do
+  fruit <- getLine
+  let f = read fruit :: Fruit
+  print (getIds f)
 
 
 {- * 12.1 Monads 2  -}
@@ -138,21 +146,21 @@ set a = SM (\_ -> (a, ()))
 -- Write function that "runs the monad" and returns just the value of the computation.
 
 runSM :: SM s a -> s -> a
-runSM = undefined
+runSM (SM sm) = snd . sm
 
 
 -- ** TE 12.2.2
 
 -- Write a state monad which multiplies the state (state is of type Int in this case) by two.
 multiplyBy2 :: SM Int ()
-multiplyBy2 = undefined
+multiplyBy2 = SM (\s -> (s*2, ()))
 
 
 -- ** TE 12.2.3
 
 -- Write a state monad which adds 3 to the state (state is of type Int in this case).
 add3 :: SM Int ()
-add3 = undefined
+add3 = SM (\s -> (s+3, ()))
 
 -- ** TE 12.2.3
 
@@ -161,7 +169,7 @@ add3 = undefined
 -- ex. te1223 2 = 11  
 
 te1223 :: Int -> Int
-te1223 = undefined
+te1223 = runSM (multiplyBy2 >> multiplyBy2 >> add3 >> get)
 
 
 -- ** TE 12.2.4
@@ -170,7 +178,12 @@ te1223 = undefined
 -- You will probably need a helper function here.
 
 te1224 :: Int -> Int
-te1224 = undefined
+te1224 = runSM helper
+  where helper = do
+          multiplyBy2
+          multiplyBy2
+          add3
+          get
 
 
 -- if you wrote it correctly, the helper function should look something like this:
@@ -191,4 +204,4 @@ te1224 = undefined
 -- ex te1225 [1,2] -> [1,1,1,2]
 
 te1225 :: [Int] -> [Int]
-te1225 = undefined
+te1225 xs = xs >>= (\x -> if odd x then replicate 3 x else return x)
