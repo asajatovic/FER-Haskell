@@ -115,14 +115,17 @@ getsPeople path = do
 -}
 
 randomListElement :: [a] -> IO a
+randomListElement [] = error "Empty list"
 randomListElement xs = do
   i <- R.randomRIO (0, length xs - 1)
   return $ xs !! i
 
 selectRandomPerson :: Map Int Person -> IO (Maybe Person)
-selectRandomPerson p = do
-  key <- randomListElement (M.keys p)
-  return (M.lookup key p)
+selectRandomPerson p
+  | p == M.empty = return Nothing
+  | otherwise    = do
+    key <- randomListElement (M.keys p)
+    return (M.lookup key p)
 
 {- ** LB 5.5 -}
 
