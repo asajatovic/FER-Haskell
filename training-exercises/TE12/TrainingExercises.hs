@@ -180,7 +180,6 @@ te1223 = runSM (multiplyBy2 >> multiplyBy2 >> add3 >> get)
 te1224 :: Int -> Int
 te1224 = runSM helper
   where helper = do
-          get
           multiplyBy2
           multiplyBy2
           add3
@@ -206,4 +205,3 @@ te1224 = runSM helper
 
 te1225 :: [Int] -> [Int]
 te1225 xs = xs >>= (\x -> if odd x then replicate 3 x else return x)
---te1225 = concatMap (\x -> if odd x then replicate 3 x else [x])
