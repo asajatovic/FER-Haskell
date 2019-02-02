@@ -102,7 +102,7 @@ getIds f = mapMaybe (\s -> farmer s >>= farmerId) $ filter (\s -> f == fruit s) 
 te1212 :: IO ()
 te1212 = do
   fruit <- getLine
-  let f = read fruit::Fruit
+  let f = read fruit :: Fruit
   print (getIds f)
 
 
@@ -180,10 +180,10 @@ te1223 = runSM (multiplyBy2 >> multiplyBy2 >> add3 >> get)
 te1224 :: Int -> Int
 te1224 = runSM helper
   where helper = do
-          a <- get
-          b <- multiplyBy2
-          c <- multiplyBy2
-          d <- add3
+          get
+          multiplyBy2
+          multiplyBy2
+          add3
           get
 
 
